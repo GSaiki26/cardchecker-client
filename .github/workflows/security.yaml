@@ -1,0 +1,27 @@
+name: "Code Security"
+
+on:
+  pull_request:
+    branches: [master, develop]
+  push:
+    branches: [master]
+
+jobs:
+  check-audit:
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-20.04]
+        version: [19]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.version }}
+      
+      - name: Run snyk
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
