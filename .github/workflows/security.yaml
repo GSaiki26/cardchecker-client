@@ -20,6 +20,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.version }}
+
+      - name: Install the packages
+        run: yarn install --production
       
       - name: Run snyk
         uses: snyk/actions/node@master

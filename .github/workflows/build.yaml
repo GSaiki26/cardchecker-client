@@ -15,5 +15,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Create a certificate folder
+        run: mkdir certs
+
       - name: Try to build the container
         run: docker build -t project .
