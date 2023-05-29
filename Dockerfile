@@ -4,6 +4,7 @@ WORKDIR /app
 
 # Update the project
 RUN apk upgrade --update --no-cache;
+RUN apk add --no-cache wget;
 RUN npm i -g grpc-tools
 
 # Configure the user
@@ -19,6 +20,9 @@ RUN yarn install --production
 COPY --chown=node tsconfig.json ./
 COPY --chown=node certs ./certs
 COPY --chown=node src ./src
+
+# Get the used proto
+RUN wget https://raw.githubusercontent.com/GSaiki26/cardchecker-api/master/app/proto/cardchecker.proto -O ./src/proto/cardchecker.proto
 
 # Run the project
 RUN yarn run build
