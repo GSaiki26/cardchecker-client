@@ -14,8 +14,11 @@ class InputService {
   /**
    * A method to send the current input.
    * @param input - The user's check.
-  */
-  public static async sendCurrentInput(logger: Logger, check: Check): Promise<void> {
+   */
+  public static async sendCurrentInput(
+    logger: Logger,
+    check: Check
+  ): Promise<void> {
     // Check if the input is valid.
     const checker = /^.{10}$/;
     if (!checker.test(check.cardId)) {
@@ -25,7 +28,10 @@ class InputService {
     }
 
     // Check if the time between checks is valid.
-    const isCheckValid = await CheckService.isTimeBetweenChecksValid(logger, check.cardId);
+    const isCheckValid = await CheckService.isTimeBetweenChecksValid(
+      logger,
+      check.cardId
+    );
     if (!isCheckValid) {
       logger.warn("Not sending the check to the server.");
       await LoggerModel.writeColor(chalk.bgRedBright(" "));
@@ -33,17 +39,18 @@ class InputService {
     }
 
     // Try to send only the input. If the check was not sended, save to the pending file.
-    if ( !(await CheckService.send(check)) ) CheckService.saveCheckInPending(check);
+    if (!(await CheckService.send(check)))
+      CheckService.saveCheckInPending(check);
   }
 
   /**
    * A method to try to send all the pending checks to the server.
-   * @param logger 
+   * @param logger
    */
   public static async sendPendingChecks(logger: Logger) {
     // Try to send all the pending checks.
     const pendingChecks = LocalChecksModel.readPendingFile();
-    const checksNotSended = pendingChecks.filter(async pendingCheck => {
+    const checksNotSended = pendingChecks.filter(async (pendingCheck) => {
       const wasSended = await CheckService.send(pendingCheck, false);
       if (!wasSended) return true;
     });

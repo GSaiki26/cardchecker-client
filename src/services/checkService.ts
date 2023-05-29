@@ -13,7 +13,10 @@ class CheckService {
    * A method to send the cardId to the server.
    * @param cardId - The detected card id.
    */
-  public static async send(check: Check, printColor: boolean = true): Promise<boolean> {
+  public static async send(
+    check: Check,
+    printColor: boolean = true
+  ): Promise<boolean> {
     const logger = LoggerModel.getLogger(check.cardId);
 
     // Send the check to the server.
@@ -52,7 +55,6 @@ class CheckService {
         this.isCheckTimeValid(logger, serverCheck)
       )
     ) {
-
       logger.warn("The time between checks is invalid.");
       return false;
     }

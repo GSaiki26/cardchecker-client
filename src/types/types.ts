@@ -6,4 +6,3 @@ export interface Check {
   cardId: string;
   checkDate: string;
 }
-

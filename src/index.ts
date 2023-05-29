@@ -43,4 +43,3 @@ chalk.level = 1;
 
 console.clear();
 console.info(chalk.yellow(TextModel.file.CARD_WAITING));
- 
