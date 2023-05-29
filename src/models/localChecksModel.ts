@@ -18,7 +18,7 @@ class LocalChecksModel {
 
     // Filter the checks to get only the checks from the provided card id.
     const pendingFile = this.readPendingFile();
-    const checksFromCardId = pendingFile.pendingChecks.filter((check) => {
+    const checksFromCardId = pendingFile.filter((check) => {
       return true ? check.cardId == cardId : false;
     });
 

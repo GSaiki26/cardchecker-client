@@ -4,7 +4,6 @@ import chalk from "chalk";
 import CardcheckerApiModel from "../models/cardcheckerApiModel";
 import LocalChecksModel from "../models/localChecksModel";
 import LoggerModel from "../models/loggerModel";
-import TextModel from "../models/textModel";
 import { Logger } from "winston";
 import { Check } from "../types/types";
 
@@ -14,37 +13,30 @@ class CheckService {
    * A method to send the cardId to the server.
    * @param cardId - The detected card id.
    */
-  public static async send(cardId: string): Promise<void> {
-    const logger = LoggerModel.getLogger(cardId);
-
-    // Check if the time between checks is valid.
-    const isTimeValid = await this.isTimeBetweenChecksValid(logger, cardId);
-    if (!isTimeValid) {
-      logger.warn("Not sending the check to the server.");
-      return;
-    }
+  public static async send(
+    check: Check,
+    printColor: boolean = true
+  ): Promise<boolean> {
+    const logger = LoggerModel.getLogger(check.cardId);
 
     // Send the check to the server.
-    const check: Check = {
-      cardId: cardId,
-      checkDate: new Date().toISOString(),
-    };
     const sendedCheck = await CardcheckerApiModel.sendCheck(logger, check);
 
     if (!sendedCheck) {
-      this.saveCheckInPending(check);
-      return;
+      if (printColor) await LoggerModel.writeColor(chalk.bgYellowBright(" "));
+      return false;
     }
 
     logger.info("The check was successfully sended to the server.");
-    LoggerModel.writeColor(chalk.bgGreenBright(" "));
+    if (printColor) await LoggerModel.writeColor(chalk.bgGreenBright(" "));
+    return true;
   }
 
   /**
    * A method to check if the time between checks is valid.
    * @param logger - The logger object to log the events.
    */
-  private static async isTimeBetweenChecksValid(
+  public static async isTimeBetweenChecksValid(
     logger: Logger,
     cardId: string
   ): Promise<boolean> {
@@ -64,10 +56,10 @@ class CheckService {
       )
     ) {
       logger.warn("The time between checks is invalid.");
-      LoggerModel.writeColor(chalk.bgRedBright(" "));
       return false;
     }
 
+    logger.info("The time between checks is valid.");
     return true;
   }
 
@@ -105,13 +97,10 @@ class CheckService {
    * A method to write in the pending files.
    * @param check - The check to save in the file.
    */
-  private static saveCheckInPending(check: Check): void {
-    // The check was not sended, so writean yellow on screen.
-    LoggerModel.writeColor(chalk.bgYellowBright(" "));
-
+  public static saveCheckInPending(check: Check): void {
     // Save the check in the pending file.
     const pendingFile = LocalChecksModel.readPendingFile();
-    pendingFile.pendingChecks.push(check);
+    pendingFile.push(check);
 
     LocalChecksModel.writePendingFile(pendingFile);
   }
