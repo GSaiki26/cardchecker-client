@@ -1,4 +1,6 @@
 // Libs
+import { setTimeout } from "timers/promises";
+
 import { createLogger, format, Logger, transports } from "winston";
 
 // Data
@@ -32,17 +34,15 @@ class LoggerModel {
    * A method to write in the console a unique color.
    * @param color - The color to be displayed.
    */
-  public static writeColor(character: string): void {
+  public static async writeColor(character: string): Promise<void> {
     // Write the color.
     let text = "";
-    for (let i = 0; i < 50; i++) {
-      text += "\n";
-      for (let i = 0; i < 200; i++) {
-        text += character;
-      }
+    for (let i = 0; i < 10000; i++) {
+      text += character;
     }
 
     console.info(text);
+    await setTimeout(1000 * 3);
   }
 }
 
