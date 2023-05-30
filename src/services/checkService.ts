@@ -27,7 +27,6 @@ class CheckService {
       return false;
     }
 
-    logger.info("The check was successfully sended to the server.");
     if (printColor) await LoggerModel.writeColor(chalk.bgGreenBright(" "));
     return true;
   }
