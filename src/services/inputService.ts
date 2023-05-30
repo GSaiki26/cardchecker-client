@@ -52,7 +52,8 @@ class InputService {
     const pendingChecks = LocalChecksModel.readPendingFile();
     const checksNotSended = pendingChecks.filter(async (pendingCheck) => {
       const wasSended = await CheckService.send(pendingCheck, false);
-      if (!wasSended) return true;
+      if (wasSended) return false;
+      return true;
     });
 
     // Save the checks that still couldn\'t be sended to the server.
