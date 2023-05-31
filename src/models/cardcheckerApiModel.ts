@@ -28,7 +28,7 @@ class CardcheckerApiModel {
    * A method to send a check to the server.
    * @param check - A method send a check to the server.
    */
-  public static async sendCheck(
+  public static sendCheck(
     logger: Logger,
     check: Check
   ): Promise<messages.DefaultRes | null> {
@@ -41,7 +41,7 @@ class CardcheckerApiModel {
       .setSendmail(true);
 
     // Do the request and return the result.
-    return await new Promise<messages.DefaultRes | null>((resolve) => {
+    return new Promise<messages.DefaultRes | null>((resolve) => {
       CardcheckerApiModel.client.create(requestBody, (err, res) => {
         if (err) {
           logger.error("Couldn't send the check to the server. " + err);
