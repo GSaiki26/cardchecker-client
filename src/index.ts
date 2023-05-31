@@ -1,11 +1,9 @@
 // Libs
 import chalk from "chalk";
 
-import CheckService from "./services/checkService";
 import InputService from "./services/inputService";
 import LoggerModel from "./models/loggerModel";
 import TextModel from "./models/textModel";
-import LocalChecksModel from "./models/localChecksModel";
 
 // Types
 import { Check } from "./types/types";
@@ -18,6 +16,7 @@ let isRunning = false;
 // Create an event to every time the stdin is used.
 process.stdin.on("data", async (chunk: Buffer) => {
   // Check if already processing some input.
+  console.clear();
   if (isRunning) return;
   isRunning = true;
 
