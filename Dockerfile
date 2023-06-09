@@ -1,5 +1,5 @@
 # Basics
-FROM node:19.2-alpine
+FROM node:20.2.0-alpine
 WORKDIR /app
 
 # Update the project
