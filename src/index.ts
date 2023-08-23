@@ -33,7 +33,7 @@ async function onData(chunk: Buffer) {
   try {
     // Check if the check is valid.
     check = new CheckModel(input, new Date(), true);
-    if (!await check.isCheckDateValid()) throw "Date not valid.";
+    if (!(await check.isCheckDateValid())) throw "Date not valid.";
   } catch {
     logger.warn("Invalid provided card.");
     await LoggerModel.writeColor(chalk.bgRedBright(" "));
@@ -42,7 +42,7 @@ async function onData(chunk: Buffer) {
   }
 
   // Send the check to the server and then try to send the pending checks to the server.
-  if (!await SendCheckService.sendCheck(check)) {
+  if (!(await SendCheckService.sendCheck(check))) {
     await LoggerModel.writeColor(chalk.bgYellow(" "));
   } else {
     await LoggerModel.writeColor(chalk.bgGreen(" "));
@@ -55,8 +55,6 @@ async function onData(chunk: Buffer) {
 // Code
 logger.info("The software was started.");
 localChecksModel.createLocalChecksFile();
-
-
 
 process.stdin.on("data", onData);
 console.clear();

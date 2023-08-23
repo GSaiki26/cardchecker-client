@@ -30,7 +30,8 @@ class CheckModel {
    */
   public async saveToServer(): Promise<boolean> {
     // Call the CardCheckerAPI mode lto add this check on the server.
-    if (!(await CardcheckerApiModel.sendCheck(this.logger, this.check))) return false;
+    if (!(await CardcheckerApiModel.sendCheck(this.logger, this.check)))
+      return false;
     return true;
   }
 
@@ -71,11 +72,15 @@ class CheckModel {
 
     // Check the results.
     if (hasCheckOnLocal) {
-      this.logger.warn("A check already is saved locally within the time interval.");
+      this.logger.warn(
+        "A check already is saved locally within the time interval."
+      );
       return false;
     }
     if (await hasCheckOnServer) {
-      this.logger.warn("A check already is saved remotely within the time interval.");
+      this.logger.warn(
+        "A check already is saved remotely within the time interval."
+      );
       return false;
     }
 

@@ -32,11 +32,10 @@ class LocalChecksModel {
 
     // Get the local checks file and get all the entries that has the same cardId.
     const localChecks = this.readlocalChecksFile();
-    const checks = localChecks.filter( (entry) => {
+    const checks = localChecks.filter((entry) => {
       if (entry.cardId == cardId) return true;
       return false;
-    }
-    );
+    });
     if (!checks.length) return false;
 
     // Get the last check and compares with the time is valid.
