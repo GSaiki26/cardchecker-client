@@ -25,4 +25,4 @@ jobs:
         run: npm i -g prettier
 
       - name: Run the linter
-        run: yarn run linter
+        run: yarn run dev:checkLinter

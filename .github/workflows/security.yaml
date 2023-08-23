@@ -22,7 +22,7 @@ jobs:
           node-version: ${{ matrix.version }}
 
       - name: Install the packages
-        run: yarn install --production
+        run: yarn install
       
       - name: Run snyk
         uses: snyk/actions/node@master
