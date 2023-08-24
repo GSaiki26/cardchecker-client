@@ -33,9 +33,7 @@ class PendingService {
 
         check.logger.info("The check was successfully sended to the server.");
       } catch {
-        check.logger.error(
-          "Couldn't send the check to the server. Stopping sending local checks..."
-        );
+        check.logger.error("Stopping sending local checks...");
         break;
       }
     }
