@@ -17,8 +17,8 @@ class CardcheckerApiModel {
   private static serverAddr = process.env.SERVER_URI!;
   private static creds = grpc.ChannelCredentials.createSsl(
     readFileSync("./certs/ca.pem"),
-    readFileSync("./certs/client.pem.key"),
-    readFileSync("./certs/client.pem")
+    readFileSync("./certs/cardchecker-client.pem.key"),
+    readFileSync("./certs/cardchecker-client.pem")
   );
 
   private static client = new services.CardCheckerServiceClient(
