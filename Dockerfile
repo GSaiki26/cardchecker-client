@@ -1,28 +1,32 @@
 # Basics
-FROM node:20.2.0-alpine
+FROM node:20-alpine
 WORKDIR /app
 
-# Update the project
-RUN apk upgrade --update --no-cache;
-RUN apk add --no-cache wget;
-RUN npm i -g grpc-tools
+# Env
+ENV TZ="America/Sao_Paulo"
+
+# Update the container
+RUN apk upgrade --no-cache --update;
+RUN apk add --no-cache tzdata;
+RUN date;
+RUN npm i -g npm;
 
 # Configure the user
-RUN mkdir logs
-RUN chown -R node /app;
+RUN chown node /app;
 USER node
 
-# Get and install the dependencies
-COPY --chown=node package.json ./
-RUN yarn install --production
+# Install the dependencies
+COPY --chown=node ./package.json .
+COPY --chown=node ./yarn.lock .
+RUN yarn install
 
-# Copy the project to the container
-COPY --chown=node tsconfig.json ./
-COPY --chown=node certs ./certs
-COPY --chown=node src ./src
+# Copy the project
+COPY --chown=node ./certs ./certs
+COPY --chown=node ./tsconfig.json .
 
-# Get the used proto
-RUN wget https://raw.githubusercontent.com/GSaiki26/cardchecker-api/master/app/proto/cardchecker.proto -O ./src/proto/cardchecker.proto
+COPY --chown=node ./src ./src
+
+RUN wget https://raw.githubusercontent.com/GSaiki26/cardchecker-api/master/app/src/proto/cardchecker.proto -O ./src/proto/cardchecker.proto
 
 # Run the project
 RUN yarn run build

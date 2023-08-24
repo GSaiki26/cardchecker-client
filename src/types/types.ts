@@ -1,8 +1,5 @@
-// Types
-export type PendingFile = Check[];
-
 // Interfaces
-export interface Check {
+export interface LocalCheck {
   cardId: string;
   checkDate: string;
 }

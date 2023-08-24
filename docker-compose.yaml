@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  cardchecker-client:
+    container_name: cardchecker-client
+    build: .
+    env_file:
+      - ./client.env
+    networks:
+      - cardchecker-api_service
+    volumes:
+      - ./data:/app/data:rw
+
+networks:
+  cardchecker-api_service:
+    external: true
